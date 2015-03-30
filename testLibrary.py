@@ -1,40 +1,29 @@
 __author__ = 'IT4noDummies'
 
-
 import threading
 
-from twython import Twython
+import twitter
 
+from config import *
 
-APP_KEY = '8TmMkuHDZRZ4MuWbtbIelGstP'
-APP_SECRET = 'qMD6FEgnVauH6zMmAAFZeCrQwXofCWcpCkv3tXP0DTrPADaDtb'
-OAUTH_TOKEN = '3114767247-KAEHsjeYXzn1OiMzUeyicxOgh9R92PAlW273ASC'
-OAUTH_TOKEN_SECRET = '6QibPwpiRAL1127eJjeRcll3D80usfR1JCt0uBGAMqbmG'
+api = twitter.Api(consumer_key=APP_KEY, consumer_secret=APP_SECRET, access_token_key=OAUTH_TOKEN, access_token_secret=OAUTH_TOKEN_SECRET)
 
-twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
+mentions = api.GetMentions()
 
-# print twitter.verify_credentials()
+if len(mentions) > 15:
+    mentions = mentions[:15]
+for tweet in mentions:
+    print '@'+tweet.user.screen_name+': '
+    print tweet.GetText()
+    print tweet.GetCreatedAt()
 
-time_line =  twitter.get_home_timeline()
+tweets = api.GetHomeTimeline()
 
-for i in time_line:
-    print i
-
-# twitter.update_status(status='See how easy using Twython is!')
-print " "
-
-mentions =  twitter.get_mentions_timeline()
-
-
-
-for dic in mentions:
-    print dic['user']
-    print dic.keys()
-    print dic['text']
-
-    print dic['user'].keys()
-    print dic['user']['screen_name']
-    print dic['created_at']
+if len(tweets) > 15:
+    tweets = tweets[:15]
+for tweet in tweets:
+    print '@'+tweet.user.screen_name+': '
+    print tweet.GetText()
 
 
 
